@@ -1,0 +1,41 @@
+.quote-box {
+	margin: 5% 10% 1% 10%;
+	background-color: white;
+}
+
+.quote {
+	font-size: 20px;
+	/*text-align: center;*/
+	margin: 0% 5% 0% 5%;
+}
+
+/*.quote-text {
+	margin: 0% 2% 0% 2%;
+}*/
+
+
+/*body {
+	background-color: grey;
+	color: grey;
+}*/
+
+div {
+	overflow: hidden;
+	/*text-align: center;*/
+	font-size: 20px;
+}
+
+#getQuote {
+	float: right;
+	font-size: 30px;
+	/*background-color: grey;*/
+	color: white;
+}
+
+.icon {
+	/*color: grey;*/
+}
+
+/*div button {
+	float: right;
+}*/

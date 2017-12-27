@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Quotes</title>
+
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css" type="text/css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+	<link rel="stylesheet" href="css/style.css">
+
+	<script>
+		var colors = ['#16a085', '#27ae60', '#2c3e50', '#f39c12', '#e74c3c', '#9b59b6', '#FB6964', '#342224', "#472E32", "#BDBB99", "#77B1A9", "#73A857"];
+		var quote = "", author = "";
+
+		function getQuote() {
+			$.ajax( {
+			    url: 'https://cors-anywhere.herokuapp.com/http://quotesondesign.com/wp-json/posts?filter[orderby]=rand&filter[posts_per_page]=1',
+			    success: function(data) {
+			        var post = data.shift(); // The data is an array of posts. Grab the first one.
+			        // $('.quote').html(post.content.substring(3, post.content.length - 5));
+			        // $('.quote-author').html(" - " + post.title)
+
+			        // If the Source is available, use it. Otherwise hide it.
+			        // if (typeof post.custom_meta !== 'undefined' && typeof post.custom_meta.Source !== 'undefined') {
+			        //   $('#quote-source').html('Source:' + post.custom_meta.Source);
+			        // } else {
+			        //   $('#quote-source').text('');
+			        // }
+
+			        quote = post.content.substring(3, post.content.length - 5);
+			        author = post.title;
+
+			        var color = Math.floor(Math.random() * colors.length);
+					$("body").animate({
+						opacity: 0 
+						}, 500,
+						function() {
+							$(this).animate({
+								opacity: 1
+							}, 500);
+							$("body").css("color", colors[color]);
+							$("body").css("background-color", colors[color]);
+							$(".icon").css("color", colors[color]);
+							$("#getQuote").css("background-color", colors[color]);
+							$(".quote").html(quote);
+							$('.quote-author').text(" - " + author);
+					});
+			    },
+			    cache: false
+			});
+		}
+
+		$(document).ready(function(){
+			getQuote();
+			$("#getQuote").click(getQuote);
+			$("#tweet").click(function(){
+				if(quote.length + author.length + 5 <= 140){
+					window.open('http://twitter.com/home?status=' + encodeURIComponent('"' + quote + '" - ' + author), '_blank');
+				} else {
+					window.open('http://twitter.com/home?status=' + encodeURIComponent('"' + quote.substring(0, 140 - author.length - 6) + '..." - ' + author), '_blank');
+				}
+			});
+		});
+	</script>
+</head>
+
+<body>
+	<div class="container-fluid">
+		<div class="well quote-box">
+			<div class="quote-text">
+				<i class="fa fa-quote-left fa-lg icon"></i>
+				<div class="quote text-center"></div>
+				<i class="fa fa-quote-right fa-lg icon" style="float: right"></i><br>				
+				<span class="quote-author" style="float: right"></span>
+			</div><br>			
+ 			<a id="tweet" href="#"><i class="fa fa-twitter-square fa-3x icon" style="margin-left: 5%"></i></a>
+			<a href="#"><i class="fa fa-tumblr-square fa-3x icon"></i></a>
+			<button id="getQuote" class="btn">New quote</button>
+		</div>
+		<p class="text-center" style="color: white">by tiger</p>
+	</div>
+</body>
+
+</html>
