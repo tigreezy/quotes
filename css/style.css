@@ -3,39 +3,27 @@
 	background-color: white;
 }
 
+.quote-author {
+	font-size: 18px;
+	float: right;
+}
+
 .quote {
-	font-size: 20px;
-	/*text-align: center;*/
+	font-size: 24px;
 	margin: 0% 5% 0% 5%;
 }
 
-/*.quote-text {
-	margin: 0% 2% 0% 2%;
-}*/
-
-
-/*body {
-	background-color: grey;
-	color: grey;
-}*/
-
 div {
 	overflow: hidden;
-	/*text-align: center;*/
-	font-size: 20px;
+	font-size: 16px;
 }
 
 #getQuote {
 	float: right;
-	font-size: 30px;
-	/*background-color: grey;*/
+	font-size: 20px;
 	color: white;
 }
 
-.icon {
-	/*color: grey;*/
+#tweet {
+	margin-left: 5%;
 }
-
-/*div button {
-	float: right;
-}*/

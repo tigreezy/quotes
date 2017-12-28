@@ -8,6 +8,9 @@
 	<link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css" type="text/css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
+	<!-- for color animation using jQuery animate() function -->
+	<script src="https://cdn.jsdelivr.net/jquery.color-animation/1/mainfile"></script>
+
 	<link rel="stylesheet" href="css/style.css">
 
 	<script>
@@ -18,35 +21,35 @@
 			$.ajax( {
 			    url: 'https://cors-anywhere.herokuapp.com/http://quotesondesign.com/wp-json/posts?filter[orderby]=rand&filter[posts_per_page]=1',
 			    success: function(data) {
-			        var post = data.shift(); // The data is an array of posts. Grab the first one.
-			        // $('.quote').html(post.content.substring(3, post.content.length - 5));
-			        // $('.quote-author').html(" - " + post.title)
-
-			        // If the Source is available, use it. Otherwise hide it.
-			        // if (typeof post.custom_meta !== 'undefined' && typeof post.custom_meta.Source !== 'undefined') {
-			        //   $('#quote-source').html('Source:' + post.custom_meta.Source);
-			        // } else {
-			        //   $('#quote-source').text('');
-			        // }
-
-			        quote = post.content.substring(3, post.content.length - 5);
+			        var post = data.shift();
+			        quote = post.content.substring(3, post.content.length - 5).replace(/&#([0-9]{4});/g, function(n, val){
+			        	return String.fromCharCode(val);
+			        }).replace(/  /g, "");
 			        author = post.title;
 
 			        var color = Math.floor(Math.random() * colors.length);
-					$("body").animate({
-						opacity: 0 
-						}, 500,
-						function() {
-							$(this).animate({
-								opacity: 1
-							}, 500);
-							$("body").css("color", colors[color]);
-							$("body").css("background-color", colors[color]);
-							$(".icon").css("color", colors[color]);
-							$("#getQuote").css("background-color", colors[color]);
-							$(".quote").html(quote);
-							$('.quote-author').text(" - " + author);
-					});
+				    $(".quote").animate({
+				    	opacity: 0}, 500, function() {
+				    		$(this).animate({opacity: 1}, 500);
+				    		$(".quote").html(quote);
+				    	}
+				    );
+				    $(".quote-author").animate({
+				    	opacity: 0}, 500, function() {
+				    		$(this).animate({opacity: 1}, 500);
+				    		$(".quote-author").text('- ' + author);
+				    	}
+				    );
+				    $("body").animate({
+				        color: colors[color],
+				        backgroundColor: colors[color]
+				    }, 1000);
+				    $(".icon").animate({
+				    	color: colors[color]
+				    }, 1000);
+				    $('#getQuote').animate({
+				    	backgroundColor: colors[color]
+				    }, 1000);
 			    },
 			    cache: false
 			});
@@ -56,11 +59,14 @@
 			getQuote();
 			$("#getQuote").click(getQuote);
 			$("#tweet").click(function(){
-				if(quote.length + author.length + 5 <= 140){
+				if(quote.length + author.length + 5 <= 280){
 					window.open('http://twitter.com/home?status=' + encodeURIComponent('"' + quote + '" - ' + author), '_blank');
 				} else {
-					window.open('http://twitter.com/home?status=' + encodeURIComponent('"' + quote.substring(0, 140 - author.length - 6) + '..." - ' + author), '_blank');
+					window.open('http://twitter.com/home?status=' + encodeURIComponent('"' + quote.substring(0, 280 - author.length - 8) + '..." - ' + author), '_blank');
 				}
+			});
+			$("#blog").click(function(){
+				window.open('https://www.tumblr.com/widgets/share/tool?posttype=quote&tags=quote&caption=' + encodeURIComponent(author) + '&content=' + encodeURIComponent(quote) + '&canonicalUrl=https%3A%2F%2Fwww.tumblr.com%2Fbuttons&shareSource=tumblr_share_button');
 			});
 		});
 	</script>
@@ -73,13 +79,13 @@
 				<i class="fa fa-quote-left fa-lg icon"></i>
 				<div class="quote text-center"></div>
 				<i class="fa fa-quote-right fa-lg icon" style="float: right"></i><br>				
-				<span class="quote-author" style="float: right"></span>
+				<span class="quote-author"></span>
 			</div><br>			
- 			<a id="tweet" href="#"><i class="fa fa-twitter-square fa-3x icon" style="margin-left: 5%"></i></a>
-			<a href="#"><i class="fa fa-tumblr-square fa-3x icon"></i></a>
+ 			<a id="tweet" href="#"><i class="fa fa-twitter-square fa-3x icon"></i></a>
+			<a id="blog" href="#"><i class="fa fa-tumblr-square fa-3x icon"></i></a>
 			<button id="getQuote" class="btn">New quote</button>
 		</div>
-		<p class="text-center" style="color: white">by tiger</p>
+		<p class="text-center" style="color: white">by <a href="../portfolio/index.html" style="color: white">tiger</a></p>
 	</div>
 </body>
 
